@@ -1,11 +1,8 @@
 import React, { Component } from 'react'
 import NewsItem from './NewsItem'
-import News2 from './News2';
-
 export class News extends Component {
    
   constructor(){
-    let cars = ["Saab", "Volvo", "BMW"];
     let articles=[
       {
       "source": {
@@ -68,12 +65,11 @@ export class News extends Component {
     return (
       <div className='container my-3'>
         <div className="row">
-        
-          {/* {this.state.articles.map((element)=>{          */}
-          <div className="col-md-4">
-          {/* <NewsItem title="News Monkey" description="my desc" imageUrl="https://photos5.appleinsider.com/gallery/56581-115005-Apple-Park-night-xl.jpg" newsUrl="TODO"/> */}
+          {this.state.articles.map((element,index)=>{
+          return <div className="col-md-4">
+          <NewsItem key={index} title="News Monkey" description="my desc" imageUrl="https://photos5.appleinsider.com/gallery/56581-115005-Apple-Park-night-xl.jpg" newsUrl="TODO"/>
           </div>
-           {/* })}  */}
+            })}  
         </div>
       </div>
     )
