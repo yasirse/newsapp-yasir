@@ -9,10 +9,10 @@ export default function News2() {
   const employees = [
     {id: 1, name: 'Alice', country: 'Austria'},
     {id: 2, name: 'Bobby Hadz', country: 'Belgium'},
-    {id: 3, name: 'Carl', country: 'Canada'},{"source": [{
-      "id": null,
-      "name": "AppleInsider"
-      }]}
+    // {id: 3, name: 'Carl', country: 'Canada'},{"source": [{
+    //   "id": null,
+    //   "name": "AppleInsider"
+    //   }]}
   ];
 
   
@@ -25,13 +25,13 @@ export default function News2() {
           <div key={index}>
             <h2>name: {employee.source}</h2>
             <h2>country: {employee.country}</h2>
-            {employee.source.map((source1, index) => {
+            {/* {employee.source.map((source1, index) => {
               return (
                 <div key={index}>
                   <h2>Pet: {source1.name}</h2>
                 </div>
               );
-            })}
+            })} */}
             <hr />
           </div>
         );
