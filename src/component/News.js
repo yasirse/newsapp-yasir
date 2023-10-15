@@ -15,14 +15,17 @@ export class News extends Component {
     pageSize: PropTypes.number, 
     category: PropTypes.string,
   }
-  
-  constructor(){
-    super();
+  capitalizeFirstLetter = (string)=> {
+    return string.charAt(0).toUpperCase() + string.slice(1);
+  }
+  constructor(props){
+    super(props);
     this.state={
       articles:[],
       loading: false,
       page:1
     };
+    document.title = `${this.capitalizeFirstLetter(this.props.category)} - NewsMonkey`;
   }
   async updateNews()
   {
@@ -36,42 +39,20 @@ export class News extends Component {
   }
   async componentDidMount()
   {
-    // console.log(this.props.category);
-    // console.log("Page size ="+this.props.pageSize);
-    // let url=`https://newsapi.org/v2/top-headlines?country=us&category=${this.props.category}&apiKey=abef641bcb0448a6b18014fa87d05967&page=1&pageSize=${this.props.pageSize}`;
-    // this.setState({loading:true});
-    // let data= await fetch(url);
-    // let parsedata= await data.json();
-    // this.setState({articles:parsedata.articles, totalResults:parsedata.totalResults, loading:false});  
-    this.updateNews();
- 
+    this.updateNews(); 
   }
 
    handleNextClick=async ()=>
   {
-    if(this.state.page+1>Math.ceil(this.state.totalResults/this.props.pageSize)){
-
-  }
+    if(this.state.page+1>Math.ceil(this.state.totalResults/this.props.pageSize)){  }
     else
     {
-      // let url=`https://newsapi.org/v2/top-headlines?country=us&category=${this.props.category}&apiKey=abef641bcb0448a6b18014fa87d05967&page=${this.state.page+1}&pageSize=${this.props.pageSize}`;
-      // this.setState({loading:true});
-      // let data= await fetch(url);
-      // let parsedata= await data.json();
-      // console.log(parsedata);
-      // this.setState({articles:parsedata.articles, page:this.state.page+1,loading:false});
       this.setState({page:this.state.page+1});
       this.updateNews();
     }   
   }
   handlePreviousClick= async()=>
   {
-    // let url=`https://newsapi.org/v2/top-headlines?country=us&category=${this.props.category}&apiKey=abef641bcb0448a6b18014fa87d05967&page=${this.state.page-1}&pageSize=${this.props.pageSize}`;
-    // this.setState({loading:true});
-    // let data= await fetch(url);
-    // let parsedata= await data.json();
-    // console.log(parsedata);
-    // this.setState({articles:parsedata.articles, page:this.state.page-1,loading:false});  
     this.setState({page:this.state.page-1});
     this.updateNews();
 
@@ -87,7 +68,7 @@ export class News extends Component {
           
           {!(this.state.loading)&&this.state.articles.map((element)=>{
           return <div className="col-md-4" key={element.url}>
-          <NewsItem  title={element.title?element.title:""} description={element.description?element.description?.slice(0,100):""} imageUrl={element.urlToImage?element.urlToImage:"https://img.olympics.com/images/image/private/t_social_share_thumb/f_auto/primary/do2gcik1bmczfwmhtjp0"} newsUrl={element.url}/>
+          <NewsItem  title={element.title?element.title:""} description={element.description?element.description?.slice(0,100):""} imageUrl={element.urlToImage?element.urlToImage:"https://img.olympics.com/images/image/private/t_social_share_thumb/f_auto/primary/do2gcik1bmczfwmhtjp0"} newsUrl={element.url} newsSource={element.source.name}/>
           </div>
             })} 
             <div className="container d-flex justify-content-between">
