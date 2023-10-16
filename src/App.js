@@ -6,7 +6,8 @@ import {Routes, Route} from "react-router-dom";
 
 function App() {
   let pageSize=15;
-  const apiKey ="3069fed3f959421aa13d57bb0e642321"// process.env.REACT_APP_NEWS_API;
+  //const apiKey =process.env.REACT_APP_NEWS_API;
+  const apiKey ="3069fed3f959421aa13d57bb0e642321";
  
 
   return (
@@ -24,5 +25,5 @@ function App() {
     </div>
   );
 }
-
+ 
 export default App;
