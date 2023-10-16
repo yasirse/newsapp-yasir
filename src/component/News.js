@@ -3,18 +3,24 @@ import NewsItem from './NewsItem'
 import PropTypes from 'prop-types'
 import Spinner from './Spinner';
 import InfiniteScroll from "react-infinite-scroll-component";
+import LoadingBar from 'react-top-loading-bar'
 
 export class News extends Component {
   static defaultProps = {
     country: 'in',
     pageSize: 8, 
     category: 'general',
-  }
+    setProgress:0,
 
+  }
+  state = {
+    progress:0
+  }
   static propTypes = {
     country: PropTypes.string,
     pageSize: PropTypes.number, 
     category: PropTypes.string,
+    setProgress:PropTypes.number
   }
   capitalizeFirstLetter = (string)=> {
     return string.charAt(0).toUpperCase() + string.slice(1);
@@ -29,27 +35,33 @@ export class News extends Component {
     };
     document.title = `${this.capitalizeFirstLetter(this.props.category)} - NewsMonkey`;
   }
+  setProgress = (progress)=>{
+    this.setState({progress: progress})
+  }
   async updateNews()
   {
-    console.log(this.props.category);
-    console.log("Page size ="+this.props.pageSize);
-    let url=`https://newsapi.org/v2/top-headlines?country=us&category=${this.props.category}&apiKey=3069fed3f959421aa13d57bb0e642321&page=1&pageSize=${this.props.pageSize}`;
-    this.setState({loading:true});
-    let data= await fetch(url);
-    let parsedata= await data.json();
-    this.setState({articles:parsedata.articles,
-       totalResults:parsedata.totalResults,
+    console.log("apikey="+this.props.apiKey);
+    this.setProgress(10);
+    const url = `https://newsapi.org/v2/top-headlines?country=${this.props.country}&category=${this.props.category}&apiKey=${this.props.apiKey}&page=${this.state.page}&pageSize=${this.props.pageSize}`;
+    this.setState({ loading: true });
+    let data = await fetch(url);
+    this.setProgress(30);
+    let parsedData = await data.json()
+    this.setProgress(70);
+    this.setState({articles:parsedData.articles,
+       totalResults:parsedData.totalResults,
         loading:false}); 
+    this.setProgress(100);
   }
   async componentDidMount()
   {
     this.updateNews(); 
   }
-
+  
   fetchMoreData = async () => {  
     console.log("in fetch more function");
     this.setState({page: this.state.page + 1})
-    const url = `https://newsapi.org/v2/top-headlines?country=${this.props.country}&category=${this.props.category}&apiKey=3069fed3f959421aa13d57bb0e642321&page=${this.state.page}&pageSize=${this.props.pageSize}`;
+    const url = `https://newsapi.org/v2/top-headlines?country=${this.props.country}&category=${this.props.category}&apiKey=${this.props.apiKey}&page=${this.state.page}&pageSize=${this.props.pageSize}`;
     let data = await fetch(url);
     let parsedData = await data.json()
     this.setState({
@@ -61,6 +73,11 @@ export class News extends Component {
     
     return (
       <>
+      <LoadingBar
+        height={3}
+        color='#f11946'
+        progress={this.state.progress} 
+      />
         <h1>NewsMonkey - Top Headlines </h1>
         {this.state.loading&&<Spinner/>}
         <InfiniteScroll
